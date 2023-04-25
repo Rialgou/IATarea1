@@ -13,13 +13,6 @@ def parseGraph():
                 h.append(dictionary)
             elif(len(aux) == 3):
                 edges.append([aux[0],aux[1],int(aux[2])])
-    #while True:
-    #    aux = file.readline().split(' ,')    
-    #    if(len(aux) == 2):
-    #        
-    #    elif(len(aux) == 3):
-    #        edges.append([aux[0],aux[1],int(aux[2])])
-
     data.append(init)
     data.append(goal)
     data.append(h)
