@@ -49,7 +49,7 @@ class SearchTree:
     def dfs(self):
         #se crea una lista con el nodo raiz, el camino inicial, y el costo inicial
         stack = [(self.ini, [],0)]
-        #se crea un set para notificar los valores visitados
+        #se crea una lista de nodos visitados 
         visited = []
         #print(self.ini.v)
         #se itera mientras haya rutas sin explorar
@@ -90,7 +90,7 @@ class SearchTree:
         #nodo raiz y camino
         stackq = queue.PriorityQueue()
         stackq.put((0,self.ini, []))
-        #se crea un set para marcar los visitados
+        #se crea una lista de nodos visitados
         visited = []
         #se itera mientras haya rutas sin explorar
         while stackq:
@@ -158,7 +158,7 @@ class SearchTree:
         #cola de prioridad que tendra la función de evaluación, el nodo inicial y el camino inicial
         stackq = queue.PriorityQueue()
         stackq.put((self.vlist[self.ini.v],self.ini, []))
-        #se crea un set de nodos visitados
+        #se crea una lista de nodos visitados
         visited = []
         #se itera mientras haya contenido
         while stackq:
