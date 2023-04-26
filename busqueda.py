@@ -119,7 +119,7 @@ class SearchTree:
         while stack:
             #lo mismo de dfs pero además se recupera la heuristica
             newH,newNode, newRoute, newCost = stack.pop(0)
-            print(newH)
+            #print(newH)
             #si se llega al objetivo se imprime el camino, el costo y las expansiones
             if newNode.v == self.goal:
                 newRoute.append(newNode)
@@ -144,8 +144,41 @@ class SearchTree:
         print("no se encontró una solución")
 
     def starA(self):
+        #se inicia el diccionario con los costos acumulados
+        cost = {self.ini: 0}
+        #cola de prioridad que tendra la función de evaluación, el nodo inicial y el camino inicial
+        stackq = queue.PriorityQueue()
+        stackq.put((self.vlist[self.ini.v],self.ini, []))
+        #se crea un set de nodos visitados
+        visited = set()
+        #se itera mientras haya contenido
+        while stackq:
+            #se recuperan los datos 
+            _,newNode, newRoute = stackq.get()
+            #si se llega al nodo solución se imprime la ruta el costo y las expansiones
+            if newNode.v == self.goal:
+                newRoute.append(newNode)
+                path = ' -> '.join([nodo.v for nodo in newRoute])
+                print(path)
+                print(f"Costo: {cost[newNode]}")
+                for node in self.vlist.values():
+                    print(f"{node.v}: {node.exp}")
+                return
+            #se expande el nodo actual
+            newNode.exp += 1
+            #si el nodo no ha sido visitado se agrega al set de visitados
+            if newNode not in visited:
+                visited.add(newNode)
+                #se recorren los hijos y se crea el nuevo costo en base a la función del costo acumulado más la heuristica
+                for child, weight in newNode.children:
+                    newCost = cost[newNode] + weight
+                    #se agregan a la lista los costos más bajos que el actual 
+                    if child not in cost or newCost < cost[child]:
+                        cost[child] = newCost
+                        f = newCost + self.vlist[child.v].h
+                        stackq.put((f, child, newRoute + [newNode]))
+        print("No se encontró solución")
         
-        return
 
 data = parseGraph.parseGraph()
 ini = data[0]
@@ -154,6 +187,4 @@ h = data[2]
 edges = data[3]
 
 tree = SearchTree(ini,goal,h,edges)
-#tree.dfs()
-#tree.uniformCost()
-tree.greedy()
+tree.starA()
