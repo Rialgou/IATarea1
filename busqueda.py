@@ -15,20 +15,29 @@ class Node:
         self.children.append((child,weight))
 class SearchTree:
     #se inicializa el arbol con el nodo raiz y los hijos
+    #se le pasa el nodo de inicio, la meta, las heuristicas y las aristas
     def __init__ (self, ini, goal, h, edges):
+        #se crea un diccionario que contendra los nodos con sus heuristicas en un diccionario
+        #la llave sera el valor
         self.vlist = {}
+        #se crea una lista con todos los nodos 
         self.klist = []
+        #se rellena la lista de nodos
         for i in range(len(h)):
             self.klist.append(h[i][0])
+        #se busca el nodo de inicio y se inserta en el diccionario 
         index = self.klist.index(ini)
         self.vlist[h[index][0]] = Node(h[index][0],h[i][1])
         self.ini = self.vlist[h[index][0]]
         #print(self.ini.v)
+        #en el caso de la meta solo se utilizara el valor
         self.goal = goal
+        #se rellena el diccionario con todos los nodos que faltan
+        #y su respectiva heuristica
         for i in range(len(h)):
             if h[i][0] not in self.vlist:
                 self.vlist[h[i][0]] = Node(h[i][0],h[i][1])
-
+        #se agregan los hijos a cada nodo en base a la arista pasada anteriormente
         for i in range(len(edges)):
             self.vlist[edges[i][0]].addChild(self.vlist[edges[i][1]],edges[i][2])
 
@@ -171,8 +180,10 @@ class SearchTree:
                 visited.add(newNode)
                 #se recorren los hijos y se crea el nuevo costo en base a la función del costo acumulado más la heuristica
                 for child, weight in newNode.children:
+                    #se calcula el nuevo costo
                     newCost = cost[newNode] + weight
-                    #se agregan a la lista los costos más bajos que el actual 
+                    #se compara si el nuevo costo encontrado es menor que 
+                    #el costo previamente conocido y se   
                     if child not in cost or newCost < cost[child]:
                         cost[child] = newCost
                         f = newCost + self.vlist[child.v].h
@@ -185,6 +196,16 @@ ini = data[0]
 goal = data[1]
 h = data[2]
 edges = data[3]
-
 tree = SearchTree(ini,goal,h,edges)
-tree.starA()
+option = input(f"ingrese que algoritmo desea usar: \n1. DFS\n 2.Costo uniforme\n 3.Greedy\n 4.A*\n")
+match option:
+    case "1":
+        tree.dfs()
+    case "2":
+        tree.uniformCost()
+    case "3":
+        tree.greedy()
+    case "4":
+        tree.starA()
+    case _:
+        print("no has elegido una opción disponible")
