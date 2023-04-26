@@ -50,7 +50,7 @@ class SearchTree:
         #se crea una lista con el nodo raiz, el camino inicial, y el costo inicial
         stack = [(self.ini, [],0)]
         #se crea un set para notificar los valores visitados
-        visited = set()
+        visited = []
         #print(self.ini.v)
         #se itera mientras haya rutas sin explorar
         while stack:
@@ -69,7 +69,7 @@ class SearchTree:
             if newNode not in visited:
                 #print(f"hijos del nodo actual: {newNode.children}")
                 #se agrega al set 
-                visited.add(newNode)
+                visited.append(newNode)
                 #se notifica su expansión
                 newNode.exp += 1
                 #se crea una lista que copia a los hijos del nodo actual
@@ -91,7 +91,7 @@ class SearchTree:
         stackq = queue.PriorityQueue()
         stackq.put((0,self.ini, []))
         #se crea un set para marcar los visitados
-        visited = set()
+        visited = []
         #se itera mientras haya rutas sin explorar
         while stackq:
             #se recuper la prioridad que no se usa, el nodo que se exploro, la nueva ruta
@@ -109,7 +109,7 @@ class SearchTree:
             newNode.exp += 1
             #si el nodo no ha sido visitado se agrega al set
             if newNode not in visited:
-                visited.add(newNode)
+                visited.append(newNode)
                 #se calculan los costos acumulados y se verifica si el costo del camino
                 #desde la raiz hasta el hijo actual es menor que el costo minimo actual
                 #si es así se actualiza el costo minimo y se agrega a la lista
@@ -123,7 +123,7 @@ class SearchTree:
     def greedy(self):
         #se procede con el mismo procedimiento de dfs pero agregando la heuristica del nodo
         stack = [(self.vlist[self.ini.v],self.ini, [],0)]
-        visited = set()
+        visited = []
         #print(self.ini.v)
         while stack:
             #lo mismo de dfs pero además se recupera la heuristica
@@ -143,7 +143,7 @@ class SearchTree:
             newNode.exp += 1
             if newNode not in visited:
                 #print(f"hijos del nodo actual: {newNode.children}")
-                visited.add(newNode)
+                visited.append(newNode)
                 #se agregan los hijos a la lista y luego se ordena la lista para
                 #tener el hijo con menor costo de la heuristica
                 for child, cost in reversed(newNode.children):
@@ -153,17 +153,17 @@ class SearchTree:
         print("no se encontró una solución")
 
     def starA(self):
-        #se inicia el diccionario con los costos acumulados
+        #se inicia el diccionario con los costos acumulados 
         cost = {self.ini: 0}
         #cola de prioridad que tendra la función de evaluación, el nodo inicial y el camino inicial
         stackq = queue.PriorityQueue()
         stackq.put((self.vlist[self.ini.v],self.ini, []))
         #se crea un set de nodos visitados
-        visited = set()
+        visited = []
         #se itera mientras haya contenido
         while stackq:
             #se recuperan los datos 
-            _,newNode, newRoute = stackq.get()
+            _,newNode, newRoute = stackq.get(0)
             #si se llega al nodo solución se imprime la ruta el costo y las expansiones
             if newNode.v == self.goal:
                 newRoute.append(newNode)
@@ -177,13 +177,16 @@ class SearchTree:
             newNode.exp += 1
             #si el nodo no ha sido visitado se agrega al set de visitados
             if newNode not in visited:
-                visited.add(newNode)
+                visited.append(newNode)
                 #se recorren los hijos y se crea el nuevo costo en base a la función del costo acumulado más la heuristica
                 for child, weight in newNode.children:
                     #se calcula el nuevo costo
                     newCost = cost[newNode] + weight
-                    #se compara si el nuevo costo encontrado es menor que 
-                    #el costo previamente conocido y se   
+                    #si el costo del hijo no se ha calculado o si 
+                    #el nuevo costo es menor que el costo del hijo, se
+                    #asigna ese nuevo costo al hijo, ya que se encuentra un 
+                    #valor menor para el camino, se crea la nueva función de evaluación
+                    #y se agrega el valor asociado al hijo y la ruta actualizada
                     if child not in cost or newCost < cost[child]:
                         cost[child] = newCost
                         f = newCost + self.vlist[child.v].h
@@ -197,7 +200,7 @@ goal = data[1]
 h = data[2]
 edges = data[3]
 tree = SearchTree(ini,goal,h,edges)
-option = input(f"ingrese que algoritmo desea usar: \n1. DFS\n 2.Costo uniforme\n 3.Greedy\n 4.A*\n")
+option = input(f"ingrese que algoritmo desea usar: \n1.DFS\n2.Costo uniforme\n3.Greedy\n4.A*\n")
 match option:
     case "1":
         tree.dfs()
