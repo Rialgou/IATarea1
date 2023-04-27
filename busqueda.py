@@ -62,9 +62,18 @@ class SearchTree:
                 path = ' -> '.join([node.v for node in newRoute])
                 print(path)
                 print(f"Costo: {newCost}")
+                tExp =0
+                nodeList = []
                 for node in self.vlist.values():
                     print(f"{node.v}: {node.exp}")
-                return
+                    nodeList.append((node.v,node.exp))
+                    tExp+= node.exp
+                if newCost == 18:
+                    opt = True
+                    return path, newCost, opt,nodeList, tExp 
+                opt = False 
+                return path, newCost, opt, nodeList, tExp
+                
             #si el nodo no ha sido visitado
             if newNode not in visited:
                 #print(f"hijos del nodo actual: {newNode.children}")
@@ -102,9 +111,17 @@ class SearchTree:
                 path = ' -> '.join([nodo.v for nodo in newRoute])
                 print(path)
                 print(f"Costo: {cost[newNode]}")
+                nodeList = []
+                tExp = 0
                 for node in self.vlist.values():
                     print(f"{node.v}: {node.exp}")
-                return
+                    nodeList.append((node.v,node.exp))
+                    tExp+= node.exp
+                if newCost == 18:
+                    opt = True
+                    return path, newCost, opt,nodeList, tExp 
+                opt = False 
+                return path, newCost, opt, nodeList, tExp
             #se expande el nodo
             newNode.exp += 1
             #si el nodo no ha sido visitado se agrega al set
@@ -135,9 +152,17 @@ class SearchTree:
                 path = ' -> '.join([node.v for node in newRoute])
                 print(path)
                 print(f"Costo: {newCost}")
+                nodeList = []
+                tExp = 0
                 for node in self.vlist.values():
                     print(f"{node.v}: {node.exp}")
-                return
+                    nodeList.append((node.v,node.exp))
+                    tExp+= node.exp
+                if newCost == 18:
+                    opt = True
+                    return path, newCost, opt,nodeList, tExp 
+                opt = False 
+                return path, newCost, opt, nodeList, tExp
             #se suma la expansión
             #si el nodo no se ha visitado se agrega al set de visitados 
             newNode.exp += 1
@@ -170,9 +195,17 @@ class SearchTree:
                 path = ' -> '.join([nodo.v for nodo in newRoute])
                 print(path)
                 print(f"Costo: {cost[newNode]}")
+                nodeList = []
+                tExp = 0
                 for node in self.vlist.values():
                     print(f"{node.v}: {node.exp}")
-                return
+                    nodeList.append((node.v,node.exp))
+                    tExp+= node.exp
+                if newCost == 18:
+                    opt = True
+                    return path, newCost, opt,nodeList, tExp 
+                opt = False 
+                return path, newCost, opt, nodeList, tExp
             #se expande el nodo actual
             newNode.exp += 1
             #si el nodo no ha sido visitado se agrega al set de visitados
